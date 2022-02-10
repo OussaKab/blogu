@@ -1,0 +1,53 @@
+logging:
+    register-shutdown-hook: true
+    charset:
+        file: UTF-8
+    level:
+        web: info
+    file:
+        name: src/main/resources/logs/application.log
+        pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t] %c{1}:%L - %m%n'
+    logback:
+        rollingpolicy:
+            file-name-pattern: src/main/resources/logs/application.log.%d{yyyy-MM-dd}.%i
+            file-name-suffix: .zip
+            file-name-suffix-pattern: .%i
+            max-history: 31
+            max-index: 31
+            min-index: 1
+            parent-dir-name: src/main/resources/logs
+            total-size-cap: 1GB
+server:
+    APP_NAME: Blogu
+    APP_VERSION: 1
+    port: 8181
+    servlet:
+        application-display-name: ${server.APP_NAME}
+        application-version: ${server.APP_VERSION}
+        context-path: /api/v${server.APP_VERSION}
+        encoding:
+            charset: UTF-8
+            content: UTF-8
+            request: UTF-8
+            response: UTF-8
+            force-response: true
+spring:
+    datasource:
+        driver-class-name: org.h2.Driver
+        password:
+        url: jdbc:h2:mem:${server.APP_NAME};DB_CLOSE_DELAY=-1
+        username: root
+    h2:
+        console:
+            title: H2 Console
+            enabled: true
+            path: /h2-console
+            settings:
+                web-allow-others: false
+    jpa:
+        generate-ddl: true
+        show-sql: true
+        hibernate:
+        ddl-auto: create-drop
+    profiles:
+        active: dev
