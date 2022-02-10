@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Component
 @Slf4j
-@Profile(value= {"dev", "prod"})
+@Profile("dev")
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
 
