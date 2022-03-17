@@ -7,6 +7,7 @@ import {Credentials} from "../models/credentials";
 import {JwtToken} from "../models/JwtToken";
 import {HttpUtilities} from "../models/HttpUtilities";
 import {SignupRequest} from "../models/SignupRequest";
+import {AbstractControl} from "@angular/forms";
 
 
 @Injectable({
@@ -37,23 +38,37 @@ export class AuthService {
     );
   }
 
-  public isLoggedIn(): boolean{
+  public isLoggedIn(): boolean {
     const token = this.getJwt();
     return !!(token && !HttpUtilities.JWT_HELPER.isTokenExpired(token));
   }
 
 
-  public getJwt() : string | null{
+  public getJwt(): string | null {
     return localStorage.getItem('token');
   }
 
-  public getUsername(): string | undefined{
+  public getUsername(): string | undefined {
     const token = this.getJwt();
     return !!token ? HttpUtilities.JWT_HELPER.decodeToken(token).sub : undefined;
   }
 
-  public getRole(): string | undefined{
+  public getRole(): string | undefined {
     const token = this.getJwt();
     return !!token ? HttpUtilities.JWT_HELPER.decodeToken(token).role : undefined;
+  }
+
+  checkUsername(control: AbstractControl) {
+    return this.http.get<boolean>(`${environment.authUrl}/existsByUsername/${control.value}`).pipe(
+      retry(2),
+      shareReplay(1)
+    );
+  }
+
+  checkEmail(control: AbstractControl) {
+    return this.http.get<boolean>(`${environment.authUrl}/existsByEmail/${control.value}`).pipe(
+      retry(2),
+      shareReplay(1)
+    );
   }
 }

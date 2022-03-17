@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Injectable, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../services/auth.service";
@@ -16,8 +16,12 @@ import {Credentials} from "../../models/credentials";
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class SignupComponent implements OnInit {
 
+  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter<boolean>();
   possibleRoles: RoleAssign[] = Object.values(RoleAssign);
 
   signupForm: FormGroup;
@@ -27,12 +31,12 @@ export class SignupComponent implements OnInit {
   loginFormSubmitted = false;
 
   errMessageLogin: string = '';
+  errMessageSignup: string = '';
+  alreadyLoggedIn = false;
   private subs: Subscription[] = [];
 
-  alreadyLoggedIn = false;
-
-  constructor( private http: HttpClient, private authService: AuthService, private router: Router) {
-    if(this.authService.isLoggedIn())
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
+    if (this.authService.isLoggedIn())
       this.alreadyLoggedIn = true;
 
     this.signupForm = new FormGroup({
@@ -52,12 +56,13 @@ export class SignupComponent implements OnInit {
     this.subs.forEach(s => s.unsubscribe());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  signup(): void{
+  signup(): void {
     this.signupFormSubmitted = true;
 
-    if (this.signupForm.valid){
+    if (this.signupForm.valid) {
       const email = this.signupForm.get('email')?.value as string;
       const username = this.signupForm.get('username')?.value as string;
       const password = this.signupForm.get('password')?.value as string;
@@ -76,13 +81,16 @@ export class SignupComponent implements OnInit {
               text: `${username} was created!`,
               icon: 'success'
             });
+            this.loggedIn.emit(true);
           },
-          error: err =>
+          error: err => {
             Swal.fire({
               title: `signup error`,
               text: err.error ? err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.',
               icon: 'error'
-            }),
+            });
+            this.errMessageSignup = err.error ? err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.';
+          },
           complete: () => {
             location.reload();
             this.router.navigateByUrl(HttpUtilities.REDIRECT_CREDENTIALS);
@@ -92,19 +100,20 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  login(): void{
+  login(): void {
     this.loginFormSubmitted = true;
-    if (this.loginForm.valid){
+    if (this.loginForm.valid) {
       const username = this.loginForm.get('usernameLogin')?.value as string;
       const password = this.loginForm.get('passwordLogin')?.value as string;
-      this.subs.push(this.authService.login({ username, password }).subscribe({
+      this.subs.push(this.authService.login({username, password}).subscribe({
         next: jwt => {
           localStorage.setItem('token', jwt.token);
           Swal.fire({
             title: 'login successful!',
-            text: `redirected to ${HttpUtilities.REDIRECT_CREDENTIALS}` ,
+            text: `redirected to ${HttpUtilities.REDIRECT_CREDENTIALS}`,
             icon: 'success'
           });
+          this.loggedIn.emit(true);
         },
         error: err => {
           Swal.fire({
@@ -112,10 +121,11 @@ export class SignupComponent implements OnInit {
             text: err.error.message,
             icon: 'error'
           });
+          this.loggedIn.emit(false);
           this.errMessageLogin = err.error.message;
         },
-        complete: () =>
-        {
+        complete: () => {
+          location.reload();
           this.router.navigateByUrl(HttpUtilities.REDIRECT_CREDENTIALS)
         }
       }));

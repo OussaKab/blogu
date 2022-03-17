@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/auth")
 @Slf4j(topic = "AuthenticationController")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
     private final AuthService authService;

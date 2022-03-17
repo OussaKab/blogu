@@ -1,5 +1,5 @@
 <div class="container mt-0 mt-md-5 pt-0 pt-md-5">
-  <div class="row" *ngIf="alreadyLoggedIn">
+  <div *ngIf="alreadyLoggedIn" class="row">
     <div class="col">
       <div class="alert alert-danger text-center" role="alert">
         <strong><i class="fa fa-exclamation-circle me-2"></i>You are already logged in! Logout first.</strong>
@@ -8,57 +8,68 @@
   </div>
   <div class="row">
     <section class="col-md-6 col-6">
-      <form action="" [formGroup]="this.signupForm" (ngSubmit)="signup()" class="border p-4 rounded shadow-lg">
+      <form (ngSubmit)="signup()" [formGroup]="this.signupForm" action="" class="border p-4 rounded shadow-lg">
         <h1 class="text-capitalize text-center border border-black py-2">create account</h1>
         <div class="d-flex justify-content-sm-around align-items-center mt-3">
-          <label for="username" class="text-capitalize ms-1 mr-3"><span *ngIf="this.signupForm?.get('username')?.errors"
+          <label class="text-capitalize ms-1 mr-3" for="username"><span *ngIf="this.signupForm?.get('username')?.errors"
                                                                         class="text-danger">*</span>username</label>
-          <input type="text" class="form-control rounded-pill ms-1" formControlName="username" id="username"
-                 placeholder="Enter a username" required>
+          <input class="form-control rounded-pill ms-1" formControlName="username" id="username" placeholder="Enter a username"
+                 required type="text">
         </div>
+        <span *ngIf="this.signupForm?.get('username')?.hasError('alreadyExist')" class="text-danger">username already taken...</span>
         <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label for="password" class="text-capitalize ms-1 ms-1"><span *ngIf="this.signupForm?.get('password')?.errors"
+          <label class="text-capitalize ms-1 ms-1" for="password"><span *ngIf="this.signupForm?.get('password')?.errors"
                                                                         class="text-danger">*</span>password</label>
-          <input type="password" class="ms-3 form-control rounded-pill" formControlName="password"
-                 placeholder="Enter your new password" id="password" required>
+          <input class="ms-3 form-control rounded-pill" formControlName="password" id="password"
+                 placeholder="Enter your new password" required type="password">
         </div>
         <small class="d-flex justify-content-around me-5">Has to be between 6 and 30 characters non blank</small>
         <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label for="email" class="text-capitalize ms-1 mr-4"><span *ngIf="this.signupForm?.get('email')?.errors"
+          <label class="text-capitalize ms-1 mr-4" for="email"><span *ngIf="this.signupForm?.get('email')?.errors"
                                                                      class="text-danger">*</span>email</label>
-          <input type="email" class="ms-4 form-control rounded-pill" formControlName="email" id="email"
-                 placeholder="Enter your email" required>
+          <input class="ms-4 form-control rounded-pill" formControlName="email" id="email" placeholder="Enter your email"
+                 required type="email">
         </div>
+        <span *ngIf="this.signupForm?.get('email')?.hasError('alreadyExist')" class="text-danger">email already in use in an existing account...</span>
         <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label for="role" class="text-capitalize ms-1 mr-4"><span *ngIf="this.signupForm?.get('role')?.errors"
-                                                                     class="text-danger">*</span>type of user</label>
-          <select id="role" class="form-control rounded-pill" formControlName="role">
-            <option class="text-capitalize" *ngFor="let role of possibleRoles" [value]="role">{{role}}</option>
-          </select>+`
+          <label class="text-capitalize ms-1 mr-4" for="role"><span *ngIf="this.signupForm?.get('role')?.errors"
+                                                                    class="text-danger">*</span>type of user</label>
+          <select class="form-control rounded-pill" formControlName="role" id="role">
+            <option *ngFor="let role of possibleRoles" [value]="role" class="text-capitalize">{{role}}</option>
+          </select>
         </div>
-        <small>By creating an account, you agree to the <a href="https://www.termsofusegenerator.net/live.php?token=OFG151JZX4EzTl1ew0XsElqBQU9d9lZI" target="_blank">terms of service </a></small>
-        <button class="btn btn-success font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1" type="submit"
-                [disabled]="!this.signupForm.valid && this.alreadyLoggedIn"> register
+        <div *ngIf="errMessageSignup" class="alert alert-danger" role="alert">
+          <strong><i class="fa fa-exclamation-circle me-2"></i>{{errMessageSignup}}</strong>
+        </div>
+        <small>By creating an account, you agree to the <a
+          href="https://www.termsofusegenerator.net/live.php?token=OFG151JZX4EzTl1ew0XsElqBQU9d9lZI" target="_blank">terms
+          of service </a></small>
+        <button [disabled]="!this.signupForm.valid && this.alreadyLoggedIn" class="btn btn-success font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1"
+                type="submit"> register
         </button>
       </form>
     </section>
     <section class="col-md-6 col-6">
-      <form action="" [formGroup]="this.loginForm" (ngSubmit)="login()" class="border p-4 rounded shadow-lg">
+      <form (ngSubmit)="login()" [formGroup]="this.loginForm" action="" class="border p-4 rounded shadow-lg">
         <h1 class="text-capitalize text-center border border-black py-2">Sign in</h1>
         <div class="d-flex justify-content-sm-around align-items-center mt-3">
-          <label for="username" class="text-capitalize ms-1 mr-3"><span *ngIf="this.loginForm.get('usernameLogin')?.errors"
-                                                                        class="text-danger">*</span>username</label>
-          <input type="text" class="form-control rounded-pill ms-1" formControlName="usernameLogin" id="usernameLogin"
-                 placeholder="Enter a username" required>
+          <label class="text-capitalize ms-1 mr-3" for="username"><span
+            *ngIf="this.loginForm.get('usernameLogin')?.errors"
+            class="text-danger">*</span>username</label>
+          <input class="form-control rounded-pill ms-1" formControlName="usernameLogin" id="usernameLogin" placeholder="Enter a username"
+                 required type="text">
         </div>
         <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label for="password" class="text-capitalize ms-1 ms-1"><span *ngIf="this.loginForm.get('passwordLogin')?.errors"
-                                                                        class="text-danger">*</span>password</label>
-          <input type="password" class="ms-3 form-control rounded-pill" formControlName="passwordLogin"
-                 placeholder="Enter your password" id="passwordLogin" required>
+          <label class="text-capitalize ms-1 ms-1" for="password"><span
+            *ngIf="this.loginForm.get('passwordLogin')?.errors"
+            class="text-danger">*</span>password</label>
+          <input class="ms-3 form-control rounded-pill" formControlName="passwordLogin" id="passwordLogin"
+                 placeholder="Enter your password" required type="password">
         </div>
-        <small class="text-danger fw-bold" *ngIf="errMessageLogin">{{errMessageLogin}}</small>
-        <button class="btn btn-primary font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1" type="submit" [disabled]="!this.loginForm.valid && this.alreadyLoggedIn">login</button>
+        <small *ngIf="errMessageLogin" class="text-danger fw-bold">{{errMessageLogin}}</small>
+        <button [disabled]="!this.loginForm.valid && this.alreadyLoggedIn" class="btn btn-primary font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1"
+                type="submit">login
+        </button>
       </form>
     </section>
   </div>
