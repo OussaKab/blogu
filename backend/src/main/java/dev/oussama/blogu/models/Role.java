@@ -1,6 +1,8 @@
 package dev.oussama.blogu.models;
 
 import lombok.Data;
+import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -8,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Role extends AbstractAuditingEntity{
+public class Role extends AbstractAuditingEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,15 +19,12 @@ public class Role extends AbstractAuditingEntity{
     @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<User> users;
 
-    @ManyToMany
-    @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"))
-    private List<Privilege> privileges;
+    @Override
+    public String getAuthority() {
+        return this.name;
+    }
 }

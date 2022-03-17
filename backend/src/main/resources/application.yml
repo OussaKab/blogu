@@ -21,6 +21,8 @@ server:
     APP_NAME: Blogu
     APP_VERSION: 1
     port: 8181
+    jwt:
+        secret: ZjA5MzRudGNiMzg5ZDJzbS1kMi1qcyBuMHhuZnU0M251YzMwOTRpeGQtbWktcWktMGV4bTMtcnUwOXRuMzA0
     servlet:
         application-display-name: ${server.APP_NAME}
         application-version: ${server.APP_VERSION}
@@ -49,5 +51,3 @@ spring:
         show-sql: true
         hibernate:
         ddl-auto: create-drop
-    profiles:
-        active: dev

@@ -30,6 +30,6 @@ public class Post extends Publication {
     @Enumerated(EnumType.STRING)
     private ContentType contentType = ContentType.TEXT;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> tags;
 }

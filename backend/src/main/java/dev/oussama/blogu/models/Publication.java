@@ -6,6 +6,6 @@ import javax.persistence.MappedSuperclass;
 
 @Data
 @MappedSuperclass
-public abstract class Publication extends AbstractAuditingEntity{
+public abstract class Publication extends AbstractAuditingEntity {
     private long likes, dislikes;
 }
