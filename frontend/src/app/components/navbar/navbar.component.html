@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md navbar-light bg-primary shadow-sm rounded-bottom">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand">
+      <div class="d-flex justify-content-center align-items-center text-light">
+        <i class="fab fa-2x fa-buffer fa-rotate-270 me-2"></i>
+        <span class="h2">Blogu</span>
+      </div>
+    </a>
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="nav">
+      <ul class="navbar-nav ml-auto text-capitalize" *ngIf="!!username">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white fw-bold" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{username}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li>
+                <a class="dropdown-item" routerLink="/me"><i class="fa fa-user-circle me-2"></i>My Profile</a>
+            </li>
+            <li><a class="dropdown-item" href="javascript:void(0)" (click)="logoff()"><i class="fa fa-door-open me-2"></i>Disconnect</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light font-weight-bold" routerLink="/explore"><i class="fa fa-binoculars"></i></a>
+        </li>
+      </ul>
+      <form class="container-fluid" (ngSubmit)="search()" [formGroup]="this.searchForm">
+        <div class="input-group">
+          <input class="form-control rounded-pill me-2 shadow-sm border-0 px-4 py-2 fw-bolder" formControlName="search" type="search" placeholder="Search for content..." aria-label="Search">
+          <button class="btn btn-success rounded-pill border-0 fw-bold shadow-sm" type="submit"><i class="fa fa-search"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>

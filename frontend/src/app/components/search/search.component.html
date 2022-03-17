@@ -1,0 +1,9 @@
+<div>
+  <ul>
+    <li *ngFor="let post of posts">
+      <img [src]="post.contentUri" class="img-fluid" alt="blog img">
+      <h4>{{post.title}}</h4>
+      <p>{{post.description}}</p>
+    </li>
+  </ul>
+</div>
