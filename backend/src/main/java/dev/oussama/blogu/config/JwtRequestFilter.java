@@ -6,6 +6,7 @@ import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -33,14 +34,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (Stream.of(SecurityConfigProd.AUTH_WHITELIST).noneMatch(req.getRequestURI()::contains)) {
             final String requestTokenHeader = req.getHeader(ArtSoukUtils.JwtConstants.REQ_HEADER);
             String jwtToken = null;
-            User user = null;
+            UserDetails user = null;
 
             log.info("Request token header: {}", SecurityContextHolder.getContext().getAuthentication());
             if (requestTokenHeader != null && requestTokenHeader.startsWith(JwtConstants.TOKEN_PREFIX)) {
                 jwtToken = requestTokenHeader.substring(JwtConstants.TOKEN_PREFIX.length());
                 try {
                     log.warn("jwtToken : " + jwtToken);
-                    user = (User) jwtUtil.translateUserFromToken(jwtToken);
+                    user = jwtUtil.translateUserFromToken(jwtToken);
                 } catch (JwtException e) {
                     log.warn("JWT exception raised", e);
                 } catch (UsernameNotFoundException e) {
@@ -56,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (SecurityContextHolder.getContext().getAuthentication() == null && user != null && jwtUtil.isTokenValid(jwtToken, user.getUsername())) {
                 log.warn("Authenticating user " + user.getUsername());
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getRoles());
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }

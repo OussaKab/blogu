@@ -24,7 +24,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfigProd extends WebSecurityConfigurerAdapter {
     static final String[] AUTH_WHITELIST = {
             "/h2-console/**",
-            "/auth/**"
+            "/auth/login",
+            "/auth/existsBy**",
+            "/auth/register"
     };
     private final JwtUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
@@ -60,6 +62,8 @@ public class SecurityConfigProd extends WebSecurityConfigurerAdapter {
                     .cacheControl()
                 .and()
         .and()
+            .csrf()
+        .disable()
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()

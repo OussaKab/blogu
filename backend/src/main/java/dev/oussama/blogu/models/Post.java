@@ -23,7 +23,7 @@ public class Post extends Publication {
 
     private long views;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     @NotBlank

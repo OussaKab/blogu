@@ -26,7 +26,6 @@ const routes: Routes = [
     path: 'me',
     component: MyprofileComponent,
     canActivate: [AuthGuard]
-
   },
   {
     path: 'error',
