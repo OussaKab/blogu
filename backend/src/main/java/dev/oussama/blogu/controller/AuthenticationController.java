@@ -51,8 +51,7 @@ public class AuthenticationController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/logoff")
     public boolean logoff() {
-        SecurityContextHolder.clearContext();
-        log.debug(SecurityContextHolder.getContext().getAuthentication().toString());
+        log.info("User logged off {}", SecurityContextHolder.getContext().getAuthentication());
         SecurityContextHolder.getContext().setAuthentication(null);
         return SecurityContextHolder.getContext().getAuthentication() == null;
     }
