@@ -84,12 +84,9 @@ export class SignupComponent implements OnInit {
             this.loggedIn.emit(true);
           },
           error: err => {
-            Swal.fire({
-              title: `signup error`,
-              text: err.error ? err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.',
-              icon: 'error'
-            });
-            this.errMessageSignup = err.error ? err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.';
+            console.error(err);
+            this.errMessageSignup = err.error ?
+              err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.';
           },
           complete: () => {
             location.reload();
@@ -116,12 +113,8 @@ export class SignupComponent implements OnInit {
           this.loggedIn.emit(true);
         },
         error: err => {
-          Swal.fire({
-            title: 'login error',
-            text: err.error.message,
-            icon: 'error'
-          });
           this.loggedIn.emit(false);
+          console.log(err);
           this.errMessageLogin = err.error.message;
         },
         complete: () => {

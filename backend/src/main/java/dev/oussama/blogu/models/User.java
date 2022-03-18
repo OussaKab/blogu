@@ -16,7 +16,7 @@ public class User extends AbstractAuditingEntity {
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -33,9 +33,6 @@ public class User extends AbstractAuditingEntity {
     @Email(message = "Email invalide")
     @Column(unique = true, nullable = false)
     private String email;
-
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts;
 
     @Transient
     public String getUsername() {

@@ -16,12 +16,37 @@ export class AuthGuardService implements CanActivate {
     const isAuthenticated: boolean = this.authService.isLoggedIn();
     localStorage.setItem('route', this.router.url);
     if (!isAuthenticated) {
-      Swal.fire({
-        title: 'You are not logged in',
-        text: 'Please login to continue...',
-        icon: 'warning',
-        confirmButtonText: 'Login'
-      }).then(() => this.authService.logout());
+      if (this.authService.loginIsExpired()) {
+        Swal.fire({
+          title: 'Session Expired',
+          text: 'Your session has expired. Please login again.',
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.value) {
+            localStorage.removeItem('token');
+            this.router.navigateByUrl('/credentials');
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Login Required',
+          text: 'Please login to continue.',
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.value) {
+            localStorage.removeItem('token');
+            this.router.navigateByUrl('/credentials');
+          }
+        });
+      }
     }
     return isAuthenticated;
   }

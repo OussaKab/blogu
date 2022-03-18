@@ -8,6 +8,7 @@ import {JwtToken} from "../models/JwtToken";
 import {HttpUtilities} from "../models/HttpUtilities";
 import {SignupRequest} from "../models/SignupRequest";
 import {AbstractControl} from "@angular/forms";
+import Swal from "sweetalert2";
 
 
 @Injectable({
@@ -26,9 +27,16 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    location.reload();
-    this.router.navigateByUrl('/credentials');
+    this.http.post<boolean>(`${environment.authUrl}/logoff`, null).subscribe({
+      next: () => {
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/credentials');
+      },
+      error: err => Swal.fire('Error', err.error.message, 'error'),
+      complete: () => {
+        location.reload();
+      }
+    });
   }
 
   register(signupRequest: SignupRequest): Observable<JwtToken> {
@@ -70,5 +78,13 @@ export class AuthService {
       retry(2),
       shareReplay(1)
     );
+  }
+
+  loginIsExpired() {
+    const token = this.getJwt();
+
+    if (!!token)
+      return HttpUtilities.JWT_HELPER.isTokenExpired(token);
+    return false;
   }
 }
