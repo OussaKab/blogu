@@ -1,5 +1,6 @@
 package dev.oussama.blogu.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.oussama.blogu.web.Credentials;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class User extends AbstractAuditingEntity {
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

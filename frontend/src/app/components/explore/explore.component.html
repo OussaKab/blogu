@@ -1,1 +1,14 @@
-
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div *ngIf="files.length > 0; else noFiles">
+        <app-post-preview [posts]="files"></app-post-preview>
+      </div>
+      <ng-template #noFiles class="text-center">
+        <div class="alert alert-info mx-auto shadow" role="alert">
+          <h3><strong>No posts available yet!</strong></h3>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

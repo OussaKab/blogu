@@ -16,31 +16,26 @@ import Swal from "sweetalert2";
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: Credentials): Observable<JwtToken> {
-    return this.http.post<JwtToken>(`${environment.authUrl}/login`, JSON.stringify(credentials), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
+    return this.http.post<JwtToken>(`${environment.serverUrl}/auth/login`, JSON.stringify(credentials), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
       retry(2),
       shareReplay(1)
     );
   }
 
   logout(): void {
-    this.http.post<boolean>(`${environment.authUrl}/logoff`, null).subscribe({
-      next: () => {
-        localStorage.removeItem('token');
-        this.router.navigateByUrl('/credentials');
-      },
+    this.http.post<boolean>(`${environment.serverUrl}/auth/logoff`, null).subscribe({
+      next: () => this.router.navigateByUrl('/credentials')
+        .finally(() => localStorage.removeItem('token')),
       error: err => Swal.fire('Error', err.error.message, 'error'),
-      complete: () => {
-        location.reload();
-      }
+      complete: () => location.reload()
     });
   }
 
   register(signupRequest: SignupRequest): Observable<JwtToken> {
-    return this.http.post<JwtToken>(`${environment.authUrl}/register`, JSON.stringify(signupRequest), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
+    return this.http.post<JwtToken>(`${environment.serverUrl}/auth/register`, JSON.stringify(signupRequest), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
       retry(2),
       shareReplay(1)
     );
@@ -57,24 +52,17 @@ export class AuthService {
   }
 
   public getUsername(): string | undefined {
-    const token = this.getJwt();
+    const token = this.getJwt() as string;
     return !!token ? HttpUtilities.JWT_HELPER.decodeToken(token).sub : undefined;
   }
 
   public getRole(): string | undefined {
     const token = this.getJwt();
-    return !!token ? HttpUtilities.JWT_HELPER.decodeToken(token).role : undefined;
+    return !!token ? HttpUtilities.JWT_HELPER.decodeToken(token).rol : undefined;
   }
 
   checkUsername(control: AbstractControl) {
-    return this.http.get<boolean>(`${environment.authUrl}/existsByUsername/${control.value}`).pipe(
-      retry(2),
-      shareReplay(1)
-    );
-  }
-
-  checkEmail(control: AbstractControl) {
-    return this.http.get<boolean>(`${environment.authUrl}/existsByEmail/${control.value}`).pipe(
+    return this.http.get<boolean>(`${environment.serverUrl}/auth/existsByUsername/${control.value}`).pipe(
       retry(2),
       shareReplay(1)
     );

@@ -2,10 +2,13 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {SignupComponent} from "./components/signup/signup.component";
 import {ErrorComponent} from "./components/error/error.component";
-import {MyprofileComponent} from "./components/myprofile/myprofile.component";
 import {AuthGuardService as AuthGuard} from "./services/auth-guard.service";
 import {ExploreComponent} from "./components/explore/explore.component";
 import {SearchComponent} from "./components/search/search.component";
+import {UploadComponent} from "./components/upload/upload.component";
+import {ViewPostComponent} from "./components/view-post/view-post.component";
+import {ProfileComponent} from "./components/profile/profile.component";
+import {ModerationsComponent } from './components/moderations/moderations.component';
 
 const routes: Routes = [
   {
@@ -18,13 +21,28 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'posts/:id',
+    component: ViewPostComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'my-moderations',
+    component: ModerationsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'upload',
+    component: UploadComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'search/:query',
     component: SearchComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'me',
-    component: MyprofileComponent,
+    path: 'profile/:username',
+    component: ProfileComponent,
     canActivate: [AuthGuard]
   },
   {

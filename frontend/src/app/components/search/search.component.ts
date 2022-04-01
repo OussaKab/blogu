@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {FileService} from "../../services/file.service";
+import {PreviewPost} from "../../models/preview-post";
 
 @Component({
   selector: 'app-search',
@@ -8,13 +10,16 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class SearchComponent implements OnInit {
 
-  search: string | undefined;
-  posts: any[] = [];
+  search: string = '';
+  posts: PreviewPost[] = [];
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private searchService: FileService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.search = this.route.snapshot.params['query'];
+    this.searchService.search(this.search).subscribe(posts => {
+      this.posts = posts;
+    });
   }
 }

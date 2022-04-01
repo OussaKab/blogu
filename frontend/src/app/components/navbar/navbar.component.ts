@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit {
   search() {
     let search = this.searchForm?.get('search')?.value as string;
     if (search) {
-      this.router.navigateByUrl('/search/' + search);
+      location.href = '/search/' + search;
     }
   }
 }

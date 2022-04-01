@@ -28,6 +28,7 @@ export class AuthGuardService implements CanActivate {
         }).then((result) => {
           if (result.value) {
             localStorage.removeItem('token');
+            location.reload();
             this.router.navigateByUrl('/credentials');
           }
         });
@@ -43,6 +44,7 @@ export class AuthGuardService implements CanActivate {
         }).then((result) => {
           if (result.value) {
             localStorage.removeItem('token');
+            location.reload();
             this.router.navigateByUrl('/credentials');
           }
         });

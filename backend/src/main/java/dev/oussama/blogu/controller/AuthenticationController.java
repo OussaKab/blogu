@@ -36,18 +36,6 @@ public class AuthenticationController {
         return authService.signup(signupRequest);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/existsByEmail/{email}")
-    public boolean existsByEmail(@NotBlank @Email @PathVariable String email) {
-        return authService.existsByEmail(email);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/existsByUsername/{username}")
-    public boolean existsByUsername(@NotBlank @PathVariable String username) {
-        return authService.existsByUsername(username);
-    }
-
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/logoff")
     public boolean logoff() {

@@ -5,27 +5,33 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SignupComponent} from './components/signup/signup.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
-import {SignedPageComponent} from './components/signed-page/signed-page.component';
 import {HomeComponent} from './components/home/home.component';
 import {ErrorComponent} from './components/error/error.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {MyprofileComponent} from './components/myprofile/myprofile.component';
 import {ExploreComponent} from './components/explore/explore.component';
 import {SearchComponent} from './components/search/search.component';
 import {BloggerInterceptor} from "./services/blogger.interceptor";
+import { UploadComponent } from './components/upload/upload.component';
+import { ViewPostComponent } from './components/view-post/view-post.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { PostPreviewComponent } from './components/post-preview/post-preview.component';
+import { ModerationsComponent } from './components/moderations/moderations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
     NavbarComponent,
-    SignedPageComponent,
     HomeComponent,
     ErrorComponent,
-    MyprofileComponent,
     ExploreComponent,
-    SearchComponent
+    SearchComponent,
+    UploadComponent,
+    ViewPostComponent,
+    ProfileComponent,
+    PostPreviewComponent,
+    ModerationsComponent
   ],
   imports: [
     BrowserModule,

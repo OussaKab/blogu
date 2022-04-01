@@ -7,7 +7,7 @@ import {UrlTree} from "@angular/router";
 
 export namespace HttpUtilities {
 
-  export const REDIRECT_CREDENTIALS: string | UrlTree = !!localStorage.getItem('route') && localStorage.getItem('route') != '/' && localStorage.getItem('route') != '/credentials' ? localStorage.getItem('route') || '/me' : '/me';
+  export const REDIRECT_CREDENTIALS: string | UrlTree = !!localStorage.getItem('route') && localStorage.getItem('route') != '/' && localStorage.getItem('route') != '/credentials' ? localStorage.getItem('route') || '/explore' : '/explore';
 
   export const JWT_HELPER = new JwtHelperService();
 

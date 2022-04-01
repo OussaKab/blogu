@@ -19,7 +19,13 @@
           </a>
           <ul aria-labelledby="navbarDarkDropdownMenuLink" class="dropdown-menu">
             <li>
-              <a class="dropdown-item" routerLink="/me"><i class="fa fa-user-circle me-2"></i>My Profile</a>
+              <a class="dropdown-item" [routerLink]="['/profile', username]"><i class="fa fa-user-circle me-2"></i>My Profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/upload"><i class="fa fa-image me-2"></i>Create post</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/my-moderations"><i class="fa fa-balance-scale me-2"></i>My moderated posts</a>
             </li>
             <li><a (click)="logoff()" class="dropdown-item" href="javascript:void(0)"><i
               class="fa fa-door-open me-2"></i>Disconnect</a></li>
