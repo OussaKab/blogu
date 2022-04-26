@@ -1,8 +1,8 @@
 package dev.oussama.blogu.services;
 
-import dev.oussama.blogu.models.Post;
-import dev.oussama.blogu.models.PreviewPost;
-import dev.oussama.blogu.models.Profile;
+import dev.oussama.blogu.model.Post;
+import dev.oussama.blogu.model.PreviewPost;
+import dev.oussama.blogu.model.Profile;
 import dev.oussama.blogu.repository.PostRepository;
 import dev.oussama.blogu.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,14 +34,18 @@ public class ProfileService {
 
         profile.setTotalViews(posts.parallelStream().mapToLong(Post::getViews).sum());
 
-        profile.setPosts(posts.stream().filter(p -> !p.isBlocked()).map(p -> {
-            PreviewPost previewPost = new PreviewPost();
-            previewPost.setId(p.getId());
-            previewPost.setTitle(p.getTitle());
-            previewPost.setCreatedBy(username);
-            previewPost.setCreatedAt(p.getCreatedDate());
-            return previewPost;
-        }).collect(Collectors.toList()));
+        List<PreviewPost> previewPosts = posts.stream()
+                .filter(p -> !p.isBlocked())
+                .map(p -> {
+                    PreviewPost previewPost = new PreviewPost();
+                    previewPost.setId(p.getId());
+                    previewPost.setTitle(p.getTitle());
+                    previewPost.setCreatedBy(username);
+                    previewPost.setCreatedAt(p.getCreatedDate());
+                    return previewPost;
+                }).collect(Collectors.toList());
+
+        profile.setPosts(previewPosts);
 
         return profile;
     }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable, OnInit, Output} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../services/auth.service";
@@ -20,19 +20,14 @@ import {Credentials} from "../../models/credentials";
   providedIn: 'root'
 })
 export class SignupComponent implements OnInit {
-
-  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter<boolean>();
   possibleRoles: RoleAssign[] = Object.values(RoleAssign);
-
   signupForm: FormGroup;
   loginForm: FormGroup;
-
   signupFormSubmitted = false;
   loginFormSubmitted = false;
-
-  errMessageLogin: string = '';
   errMessageSignup: string = '';
   alreadyLoggedIn = false;
+  formType: string = ''
   private subs: Subscription[] = [];
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
@@ -81,12 +76,15 @@ export class SignupComponent implements OnInit {
               text: `${username} was created!`,
               icon: 'success'
             });
-            this.loggedIn.emit(true);
           },
           error: err => {
             console.error(err);
-            this.errMessageSignup = err.error ?
-              err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.';
+            Swal.fire({
+              title: 'Signup failed!',
+              text: err.error ?
+                err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.',
+              icon: 'error'
+            });
           },
           complete: () => {
             location.reload();
@@ -110,12 +108,15 @@ export class SignupComponent implements OnInit {
             text: `redirected to ${HttpUtilities.REDIRECT_CREDENTIALS}`,
             icon: 'success'
           });
-          this.loggedIn.emit(true);
         },
         error: err => {
-          this.loggedIn.emit(false);
           console.log(err);
-          this.errMessageLogin = err.error.message;
+          Swal.fire({
+            title: 'Login failed!',
+            text: err.error ?
+              err.error.message : 'Server may be down... Contact us at help@blogu.com with a screenshot for troubleshooting.',
+            icon: 'error'
+          });
         },
         complete: () => {
           location.reload();
@@ -123,5 +124,9 @@ export class SignupComponent implements OnInit {
         }
       }));
     }
+  }
+
+  showForm(str: string) {
+    this.formType = str;
   }
 }

@@ -1,8 +1,8 @@
 package dev.oussama.blogu.services;
 
 import dev.oussama.blogu.config.JwtUtil;
-import dev.oussama.blogu.models.Role;
-import dev.oussama.blogu.models.User;
+import dev.oussama.blogu.model.Role;
+import dev.oussama.blogu.model.User;
 import dev.oussama.blogu.repository.RoleRepository;
 import dev.oussama.blogu.repository.UserRepository;
 import dev.oussama.blogu.web.Credentials;

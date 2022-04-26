@@ -8,7 +8,7 @@ import {SearchComponent} from "./components/search/search.component";
 import {UploadComponent} from "./components/upload/upload.component";
 import {ViewPostComponent} from "./components/view-post/view-post.component";
 import {ProfileComponent} from "./components/profile/profile.component";
-import {ModerationsComponent } from './components/moderations/moderations.component';
+import {ModerationsComponent} from './components/moderations/moderations.component';
 
 const routes: Routes = [
   {
@@ -36,7 +36,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'search/:query',
+    path: 'results/:query',
     component: SearchComponent,
     canActivate: [AuthGuard]
   },

@@ -1,6 +1,6 @@
 package dev.oussama.blogu.config;
 
-import dev.oussama.blogu.models.AbstractAuditingEntity;
+import dev.oussama.blogu.model.AbstractAuditingEntity;
 
 public class ArtSoukUtils {
 

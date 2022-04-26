@@ -1,14 +1,12 @@
 package dev.oussama.blogu.controller;
 
-import dev.oussama.blogu.models.Post;
-import dev.oussama.blogu.models.PostView;
-import dev.oussama.blogu.models.PreviewPost;
-import dev.oussama.blogu.models.UploadPost;
+import dev.oussama.blogu.model.*;
 import dev.oussama.blogu.services.PostService;
 import dev.oussama.blogu.web.exceptions.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,10 +32,15 @@ public class PostController {
         return postService.getPost(id);
     }
 
+
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping
-    public Long uploadPost(@RequestBody UploadPost uploadPost) {
-        return postService.uploadPost(uploadPost);
+    public Long uploadPost(@RequestParam("title") String title,
+                           @RequestParam("description") String description,
+                           @RequestParam("contentType") String contentType,
+                           @RequestParam("content") MultipartFile content,
+                           @RequestParam("thumbnail") MultipartFile thumbnail) {
+        return postService.uploadPost(title, description, contentType, content, thumbnail);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

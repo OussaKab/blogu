@@ -8,7 +8,6 @@ import {JwtToken} from "../models/JwtToken";
 import {HttpUtilities} from "../models/HttpUtilities";
 import {SignupRequest} from "../models/SignupRequest";
 import {AbstractControl} from "@angular/forms";
-import Swal from "sweetalert2";
 
 
 @Injectable({
@@ -16,7 +15,9 @@ import Swal from "sweetalert2";
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {}
+
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   login(credentials: Credentials): Observable<JwtToken> {
     return this.http.post<JwtToken>(`${environment.serverUrl}/auth/login`, JSON.stringify(credentials), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
@@ -26,12 +27,12 @@ export class AuthService {
   }
 
   logout(): void {
-    this.http.post<boolean>(`${environment.serverUrl}/auth/logoff`, null).subscribe({
-      next: () => this.router.navigateByUrl('/credentials')
-        .finally(() => localStorage.removeItem('token')),
-      error: err => Swal.fire('Error', err.error.message, 'error'),
-      complete: () => location.reload()
-    });
+    this.http.post<boolean>(`${environment.serverUrl}/auth/logoff`, null).subscribe();
+    this.router.navigateByUrl('/credentials')
+      .finally(() => {
+        localStorage.removeItem('token');
+        location.reload();
+      })
   }
 
   register(signupRequest: SignupRequest): Observable<JwtToken> {

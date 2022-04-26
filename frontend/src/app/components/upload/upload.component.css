@@ -1,0 +1,31 @@
+.blogu-blue {
+  background-color: #2a5298;
+}
+
+.blogu-dark {
+  background-color: #282B34;
+}
+
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashed-border {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.content-drop {
+  min-height: 150px;
+}
+
+audio {
+  width: 100%;
+  height: 50px;
+}

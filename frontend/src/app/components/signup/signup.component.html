@@ -7,75 +7,97 @@
     </div>
   </div>
   <div class="row">
-    <section class="col-md-6 col-6">
-      <form (ngSubmit)="signup()" [formGroup]="this.signupForm" action="" class="border p-4 rounded shadow-lg">
-        <h1 class="text-capitalize text-center border border-black py-2">create account</h1>
-        <div class="d-flex justify-content-sm-around align-items-center mt-3">
-          <label class="text-capitalize ms-1 mr-3" for="username"><span *ngIf="this.signupForm?.get('username')?.errors"
-                                                                        class="text-danger">*</span>username</label>
-          <input class="form-control rounded-pill ms-1" formControlName="username" id="username"
-                 placeholder="Enter a username"
-                 required type="text">
+    <div class="col">
+      <nav>
+        <ul class="list-inline d-flex justify-content-between align-items-center">
+          <li>
+            <button (click)="showForm('signup')" class="btn btn-light text-secondary fw-bold shadow">Create account
+            </button>
+          </li>
+          <li>
+            <button (click)="showForm('login')" class="btn blogu-blue text-white fw-bold shadow w-100">Sign in</button>
+          </li>
+        </ul>
+      </nav>
+      <div [ngSwitch]="this.formType">
+        <div *ngSwitchCase="'signup'">
+          <section class="col-md-6 col-6" id="signup">
+            <form (ngSubmit)="signup()" [formGroup]="this.signupForm" action=""
+                  class="p-4 rounded shadow-lg blogu-dark">
+              <h2 class="text-capitalize mb-4 py-2"><i class="fa fa-user-plus"></i> create account</h2>
+              <div class="d-flex justify-content-sm-around align-items-center">
+                <label class="text-capitalize ms-1 mr-3" for="username"><span
+                  *ngIf="this.signupForm?.get('username')?.errors"
+                  class="text-danger">*</span>username</label>
+                <input class="form-control rounded-pill ms-1" formControlName="username" id="username"
+                       placeholder="Enter a username"
+                       required type="text">
+              </div>
+              <span *ngIf="this.signupForm?.get('username')?.hasError('alreadyExist')" class="text-danger">username already taken...</span>
+              <div class="d-flex justify-content-sm-around mt-3 align-items-center">
+                <label class="text-capitalize ms-1 ms-1" for="password"><span
+                  *ngIf="this.signupForm?.get('password')?.errors"
+                  class="text-danger">*</span>password</label>
+                <input class="ms-3 form-control rounded-pill" formControlName="password" id="password"
+                       placeholder="Enter your new password" required type="password">
+              </div>
+              <small class="d-flex justify-content-around me-5">Has to be between 6 and 30 characters non blank</small>
+              <div class="d-flex justify-content-sm-around mt-3 align-items-center">
+                <label class="text-capitalize ms-1 mr-4" for="email"><span *ngIf="this.signupForm?.get('email')?.errors"
+                                                                           class="text-danger">*</span>email</label>
+                <input class="ms-4 form-control rounded-pill" formControlName="email" id="email"
+                       placeholder="Enter your email"
+                       required type="email">
+              </div>
+              <span *ngIf="this.signupForm?.get('email')?.hasError('alreadyExist')" class="text-danger">email already in use in an existing account...</span>
+              <div class="d-flex justify-content-sm-around mt-3 align-items-center">
+                <label class="text-capitalize ms-1 mr-4" for="role"><span *ngIf="this.signupForm?.get('role')?.errors"
+                                                                          class="text-danger">*</span>type of
+                  user</label>
+                <select class="form-control rounded-pill" formControlName="role" id="role">
+                  <option *ngFor="let role of possibleRoles" [value]="role" class="text-capitalize">{{role}}</option>
+                </select>
+              </div>
+              <div *ngIf="errMessageSignup" class="alert alert-danger" role="alert">
+                <strong><i class="fa fa-exclamation-circle me-2"></i>{{errMessageSignup}}</strong>
+              </div>
+              <small>By creating an account, you agree to the <a
+                href="https://www.termsofusegenerator.net/live.php?token=OFG151JZX4EzTl1ew0XsElqBQU9d9lZI"
+                target="_blank">terms
+                of service </a></small>
+              <button [disabled]="!this.signupForm.valid && this.alreadyLoggedIn"
+                      class="btn btn-success font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1"
+                      type="submit"> register
+              </button>
+            </form>
+          </section>
         </div>
-        <span *ngIf="this.signupForm?.get('username')?.hasError('alreadyExist')" class="text-danger">username already taken...</span>
-        <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label class="text-capitalize ms-1 ms-1" for="password"><span *ngIf="this.signupForm?.get('password')?.errors"
-                                                                        class="text-danger">*</span>password</label>
-          <input class="ms-3 form-control rounded-pill" formControlName="password" id="password"
-                 placeholder="Enter your new password" required type="password">
+        <div *ngSwitchDefault>
+          <section class="col-md-6 col-6 align-self-center" id="login">
+            <form (ngSubmit)="login()" [formGroup]="this.loginForm" action="" class="p-4 rounded shadow-lg blogu-blue">
+              <h2 class="text-capitalize mb-4 py-2"><i class="fa fa-door-open"></i> Sign in</h2>
+              <label class="text-capitalize ms-1 mr-3" for="usernameLogin"><span
+                *ngIf="this.loginForm.get('usernameLogin')?.errors"
+                class="text-danger">*</span>username</label>
+              <input class="form-control shadow-sm" formControlName="usernameLogin" id="usernameLogin"
+                     placeholder="Enter a username"
+                     required type="text">
+              <label class="text-capitalize ms-1 mt-2" for="passwordLogin"><span
+                *ngIf="this.loginForm.get('passwordLogin')?.errors"
+                class="text-danger">*</span>password</label>
+              <div class="input-group mt-2">
+                <input class="form-control shadow-sm" formControlName="passwordLogin" id="passwordLogin"
+                       placeholder="Enter your password" required type="password">
+                <button [disabled]="!this.loginForm.valid && this.alreadyLoggedIn"
+                        class="shadow-sm input-group-text btn-dark btn text-white font-weight-bold text-capitalize"
+                        tabindex="-1"
+                        type="submit"><i class="fa fa-sign-in-alt"></i>
+                </button>
+              </div>
+            </form>
+          </section>
         </div>
-        <small class="d-flex justify-content-around me-5">Has to be between 6 and 30 characters non blank</small>
-        <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label class="text-capitalize ms-1 mr-4" for="email"><span *ngIf="this.signupForm?.get('email')?.errors"
-                                                                     class="text-danger">*</span>email</label>
-          <input class="ms-4 form-control rounded-pill" formControlName="email" id="email"
-                 placeholder="Enter your email"
-                 required type="email">
-        </div>
-        <span *ngIf="this.signupForm?.get('email')?.hasError('alreadyExist')" class="text-danger">email already in use in an existing account...</span>
-        <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label class="text-capitalize ms-1 mr-4" for="role"><span *ngIf="this.signupForm?.get('role')?.errors"
-                                                                    class="text-danger">*</span>type of user</label>
-          <select class="form-control rounded-pill" formControlName="role" id="role">
-            <option *ngFor="let role of possibleRoles" [value]="role" class="text-capitalize">{{role}}</option>
-          </select>
-        </div>
-        <div *ngIf="errMessageSignup" class="alert alert-danger" role="alert">
-          <strong><i class="fa fa-exclamation-circle me-2"></i>{{errMessageSignup}}</strong>
-        </div>
-        <small>By creating an account, you agree to the <a
-          href="https://www.termsofusegenerator.net/live.php?token=OFG151JZX4EzTl1ew0XsElqBQU9d9lZI" target="_blank">terms
-          of service </a></small>
-        <button [disabled]="!this.signupForm.valid && this.alreadyLoggedIn"
-                class="btn btn-success font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1"
-                type="submit"> register
-        </button>
-      </form>
-    </section>
-    <section class="col-md-6 col-6">
-      <form (ngSubmit)="login()" [formGroup]="this.loginForm" action="" class="border p-4 rounded shadow-lg">
-        <h1 class="text-capitalize text-center border border-black py-2">Sign in</h1>
-        <div class="d-flex justify-content-sm-around align-items-center mt-3">
-          <label class="text-capitalize ms-1 mr-3" for="username"><span
-            *ngIf="this.loginForm.get('usernameLogin')?.errors"
-            class="text-danger">*</span>username</label>
-          <input class="form-control rounded-pill ms-1" formControlName="usernameLogin" id="usernameLogin"
-                 placeholder="Enter a username"
-                 required type="text">
-        </div>
-        <div class="d-flex justify-content-sm-around mt-3 align-items-center">
-          <label class="text-capitalize ms-1 ms-1" for="password"><span
-            *ngIf="this.loginForm.get('passwordLogin')?.errors"
-            class="text-danger">*</span>password</label>
-          <input class="ms-3 form-control rounded-pill" formControlName="passwordLogin" id="passwordLogin"
-                 placeholder="Enter your password" required type="password">
-        </div>
-        <small *ngIf="errMessageLogin" class="text-danger fw-bold">{{errMessageLogin}}</small>
-        <button [disabled]="!this.loginForm.valid && this.alreadyLoggedIn"
-                class="btn btn-primary font-weight-bold w-100 mt-3 text-capitalize" tabindex="-1"
-                type="submit">login
-        </button>
-      </form>
-    </section>
+      </div>
+    </div>
   </div>
 </div>

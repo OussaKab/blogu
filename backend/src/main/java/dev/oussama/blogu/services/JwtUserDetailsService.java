@@ -1,6 +1,6 @@
 package dev.oussama.blogu.services;
 
-import dev.oussama.blogu.models.User;
+import dev.oussama.blogu.model.User;
 import dev.oussama.blogu.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

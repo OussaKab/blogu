@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <form (submit)="edit()" *ngIf="post" [formGroup]="editForm" class="rounded shadow-sm p-3 blogu-dark">
+    <div class="d-flex justify-content-start align-items-center mb-2">
+      <a class="text-capitalize btn btn-primary fw-bold me-3 shadow-sm" routerLink="/explore"><i
+        class="fa fa-arrow-left me-2"></i>go
+        back</a>
+      <button (click)="moderate()" *ngIf="role == 'ROLE_MODERATOR'" class="btn btn-danger fw-bold text-capitalize"
+              type="button"><i
+        class="fa fa-gavel me-2"></i> moderate
+      </button>
+    </div>
+    <hr>
+    <h3 class="fw-bold">{{post.title}}</h3>
+    <p>{{post.description}}</p>
+    <div class="d-flex justify-content-between mt-2">
+      <h5><a [routerLink]="['/profile', post.createdBy]"
+             class="text-black badge rounded-pill bg-secondary text-white text-decoration-none"><strong><i
+        class="fa fa-user-circle"></i></strong> {{post.createdBy}}</a></h5>
+      <p><i class="fa fa-calendar-alt"></i><strong> {{post.createdDate | date : 'full'}}</strong></p>
+      <p><i class="fa fa-eye"></i> {{ post.views}} <strong>views</strong></p>
+    </div>
+  </form>
+  <form (submit)="createComment()" [formGroup]="commentForm" action="" class="bg-white mt-3">
+    <div class="input-group mb-3 shadow-sm">
+      <textarea class="form-control" formControlName="comment" id="comment" name="comment"
+                placeholder="Enter your comment"
+                rows="1"></textarea>
+      <button class="input-group-text bg-primary text-white" id="basic-addon2" type="submit"><i
+        class="fa fa-comment-dots"></i></button>
+    </div>
+  </form>
+  <div>
+    <strong><i class="fa fa-comments"></i> {{comments.length}} comment{{comments.length > 1 ? 's' : ''}}</strong>
+  </div>
+  <div class="card-columns d-flex flex-wrap">
+    <div *ngFor="let comment of comments" class="card shadow-sm border mt-3 me-md-2">
+      <div class="card-body">
+        <h5 class="card-title text-black">{{comment.text}}</h5>
+        <div class="d-flex justify-content-start align-items-center">
+          <a [routerLink]="['/profile', comment.username]"
+             class="card-text text-muted"><strong>By</strong> {{comment.username}}</a>
+          <span class="card-text text-muted ms-2"><strong>Posted</strong> {{comment.createdAt | date : 'short'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

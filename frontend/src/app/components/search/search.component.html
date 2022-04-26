@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div *ngIf="posts.length > 0; else noPosts">
-    <h4 class="ms-2">{{posts.length}} result{{posts.length > 1 ? 's': ''}}</h4>
+    <h4 class="ms-2">{{posts.length}} result{{posts.length > 1 ? 's' : ''}}</h4>
     <app-post-preview [hideUsername]="false" [posts]="posts"></app-post-preview>
   </div>
   <ng-template #noPosts>

@@ -1,8 +1,6 @@
 package dev.oussama.blogu.controller;
 
-import dev.oussama.blogu.models.Comment;
-import dev.oussama.blogu.models.CommentDTO;
-import dev.oussama.blogu.repository.CommentRepository;
+import dev.oussama.blogu.model.CommentDTO;
 import dev.oussama.blogu.services.CommentService;
 import dev.oussama.blogu.web.exceptions.PostNotFoundException;
 import org.springframework.web.bind.annotation.*;

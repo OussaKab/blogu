@@ -1,8 +1,8 @@
 package dev.oussama.blogu.services;
 
-import dev.oussama.blogu.models.Comment;
-import dev.oussama.blogu.models.CommentDTO;
-import dev.oussama.blogu.models.Post;
+import dev.oussama.blogu.model.Comment;
+import dev.oussama.blogu.model.CommentDTO;
+import dev.oussama.blogu.model.Post;
 import dev.oussama.blogu.repository.CommentRepository;
 import dev.oussama.blogu.repository.PostRepository;
 import dev.oussama.blogu.repository.UserRepository;
@@ -37,7 +37,7 @@ public class CommentService {
 
         final String username = c.getUsername();
 
-        dev.oussama.blogu.models.User fetchedUser = userRepository.findByCredentials_Username(username)
+        dev.oussama.blogu.model.User fetchedUser = userRepository.findByCredentials_Username(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         comment.setCreatedBy(username);

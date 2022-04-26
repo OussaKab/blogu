@@ -1,7 +1,7 @@
 package dev.oussama.blogu.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import dev.oussama.blogu.models.Role;
+import dev.oussama.blogu.model.Role;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

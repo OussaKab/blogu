@@ -1,6 +1,6 @@
 package dev.oussama.blogu.config;
 
-import dev.oussama.blogu.models.Role;
+import dev.oussama.blogu.model.Role;
 import dev.oussama.blogu.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;

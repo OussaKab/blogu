@@ -1,4 +1,4 @@
-package dev.oussama.blogu.models;
+package dev.oussama.blogu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.oussama.blogu.web.Credentials;

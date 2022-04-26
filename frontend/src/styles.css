@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.blogu-blue {
+  background-color: #2a5298;
+}
+
+.blogu-dark {
+  background-color: #282B34;
+}
+
+.whitesmoke {
+  background-color: #f5f5f5;
+}

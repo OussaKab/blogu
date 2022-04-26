@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o ",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -25,7 +25,8 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.4",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "zxcvbn3": "^0.1.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.0",

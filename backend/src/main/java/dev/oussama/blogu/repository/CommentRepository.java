@@ -1,6 +1,6 @@
 package dev.oussama.blogu.repository;
 
-import dev.oussama.blogu.models.Comment;
+import dev.oussama.blogu.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

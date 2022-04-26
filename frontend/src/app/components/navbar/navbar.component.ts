@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +11,9 @@ export class NavbarComponent implements OnInit {
 
   username: string | undefined;
   searchForm: FormGroup;
+  role: string | undefined;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
     this.searchForm = new FormGroup({
       search: new FormControl('', [Validators.required])
     });
@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.authService.getUsername();
+    this.role = this.authService.getRole();
   }
 
   logoff() {
@@ -30,7 +31,7 @@ export class NavbarComponent implements OnInit {
   search() {
     let search = this.searchForm?.get('search')?.value as string;
     if (search) {
-      location.href = '/search/' + search;
+      location.href = '/results/' + search;
     }
   }
 }

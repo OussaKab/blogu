@@ -1,3 +1,5 @@
+
+
 logging:
     register-shutdown-hook: true
     charset:
@@ -34,6 +36,10 @@ server:
             response: UTF-8
             force-response: true
 spring:
+    servlet:
+        multipart:
+            max-file-size: 1GB
+            max-request-size: 1GB
     datasource:
         driver-class-name: org.h2.Driver
         password:

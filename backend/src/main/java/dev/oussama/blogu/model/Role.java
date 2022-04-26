@@ -1,4 +1,4 @@
-package dev.oussama.blogu.models;
+package dev.oussama.blogu.model;
 
 import lombok.Data;
 import lombok.ToString;

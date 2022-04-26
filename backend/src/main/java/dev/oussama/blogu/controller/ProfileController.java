@@ -1,6 +1,6 @@
 package dev.oussama.blogu.controller;
 
-import dev.oussama.blogu.models.Profile;
+import dev.oussama.blogu.model.Profile;
 import dev.oussama.blogu.services.ProfileService;
 import org.springframework.web.bind.annotation.*;
 

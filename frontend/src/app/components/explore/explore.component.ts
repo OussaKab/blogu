@@ -12,7 +12,8 @@ export class ExploreComponent implements OnInit {
 
   files: PreviewPost[] = [];
 
-  constructor(private fileService: FileService) {}
+  constructor(private fileService: FileService) {
+  }
 
   ngOnInit(): void {
     this.fileService.getAll().subscribe({

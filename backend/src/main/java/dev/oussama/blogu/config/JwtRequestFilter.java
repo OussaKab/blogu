@@ -1,7 +1,6 @@
 package dev.oussama.blogu.config;
 
 import dev.oussama.blogu.config.ArtSoukUtils.JwtConstants;
-import dev.oussama.blogu.models.User;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

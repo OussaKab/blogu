@@ -1,0 +1,15 @@
+.blogu-blue {
+  background-color: #2a5298;
+}
+
+.blogu-dark {
+  background-color: #282B34;
+}
+
+.round-end {
+  border-radius: 0 10px 10px 0 !important;
+}
+
+.round-start {
+  border-radius: 10px 0 0 10px !important;
+}

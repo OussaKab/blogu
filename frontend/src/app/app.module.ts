@@ -12,11 +12,12 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ExploreComponent} from './components/explore/explore.component';
 import {SearchComponent} from './components/search/search.component';
 import {BloggerInterceptor} from "./services/blogger.interceptor";
-import { UploadComponent } from './components/upload/upload.component';
-import { ViewPostComponent } from './components/view-post/view-post.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { PostPreviewComponent } from './components/post-preview/post-preview.component';
-import { ModerationsComponent } from './components/moderations/moderations.component';
+import {UploadComponent} from './components/upload/upload.component';
+import {ViewPostComponent} from './components/view-post/view-post.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import {PostPreviewComponent} from './components/post-preview/post-preview.component';
+import {ModerationsComponent} from './components/moderations/moderations.component';
+import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ModerationsComponent } from './components/moderations/moderations.compo
     ViewPostComponent,
     ProfileComponent,
     PostPreviewComponent,
-    ModerationsComponent
+    ModerationsComponent,
+    DragAndDropDirective
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 package dev.oussama.blogu.repository;
 
-import dev.oussama.blogu.models.Role;
+import dev.oussama.blogu.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

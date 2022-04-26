@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <section class="col-md-6 col-12 blogu-dark rounded shadow p-3">
+      <form (ngSubmit)="upload()" [formGroup]="this.uploadForm" class="row justify-content-center">
+        <div class="col">
+          <div class="row">
+            <div class="col-12 mb-3 d-flex align-items-center justify-content-between">
+              <h1>Create a post </h1>
+              <button [disabled]="!this.uploadForm.valid" class="btn blogu-blue text-white fw-bold text-capitalize"><i
+                class="fa fa-paper-plane"></i> upload
+              </button>
+            </div>
+            <div class="col-3">
+              <img (filesDropped)="onThumbnailDrop($event)" [ngClass]="{'dashed-border': this.thumbnailUrl == ''}"
+                   [src]="this.thumbnailUrl"
+                   accept="image/*" alt="drag and drop here"
+                   appDragAndDrop class="img-fluid h-100 w-100">
+            </div>
+            <div class="col d-flex justify-content-start  align-items-baseline flex-column">
+              <input class="form-control py-2 ms-1 fw-bold" formControlName="title" id="title"
+                     placeholder="Enter a title"
+                     required type="text">
+              <hr class="w-100">
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col p-0">
+            <div (filesDropped)="onContentDrop($event)" [ngClass]="{'dashed-border': !this.typeOfContent}"
+                 appDragAndDrop class="container-fluid content-drop p-0">
+              <div [ngSwitch]="this.typeOfContent">
+                <div *ngSwitchCase="'image'">
+                  <img [src]="this.contentUrl" alt="" class="img-fluid w-100 border-0 rounded">
+                </div>
+                <div *ngSwitchCase="'video'">
+                  <video [src]="this.contentUrl" autoplay class="img-fluid w-100 border-0 rounded" controls></video>
+                </div>
+                <div *ngSwitchCase="'audio'">
+                  <audio [src]="this.contentUrl" autoplay class="w-100 border-0 rounded-start" controls></audio>
+                </div>
+                <div *ngSwitchDefault>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <p class="text-center text-muted fw-bolder h5 mt-5">Drag and drop here <i
+                      class="fa fa-paperclip"></i></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="d-flex justify-content-sm-around align-items-center mt-3">
+              <label class="text-capitalize ms-1 me-2" for="thumbnail"><span
+                *ngIf="this.uploadForm.get('thumbnail')?.errors"
+                class="text-danger">*</span>Thumbnail</label>
+              <input (change)="onThumbnailChange($event)" accept="image/*" class="form-control" id="thumbnail"
+                     type="file">
+              <input formControlName="thumbnail" name="content" type="hidden">
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-flex justify-content-sm-around align-items-center mt-3">
+              <label class="text-capitalize ms-1 mr-3" for="content"><span
+                *ngIf="this.uploadForm.get('content')?.errors"
+                class="text-danger">*</span>Post</label>
+              <input (change)="onContentChange($event)" accept="audio/*, image/*, video/*" class="form-control ms-1"
+                     id="content" type="file">
+              <input formControlName="content" name="content" type="hidden">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col p-0 mt-3">
+            <textarea class="form-control m-0" formControlName="description" id="description"
+                      placeholder="Enter a description"></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
