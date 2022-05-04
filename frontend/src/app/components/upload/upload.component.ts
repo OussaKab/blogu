@@ -33,7 +33,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       content: new FormControl('', [Validators.required]),
-      thumbnail: new FormControl('', [])
+      thumbnail: new FormControl('', [Validators.required])
     });
   }
 

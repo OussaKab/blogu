@@ -13,8 +13,8 @@
             <div class="col-3">
               <img (filesDropped)="onThumbnailDrop($event)" [ngClass]="{'dashed-border': this.thumbnailUrl == ''}"
                    [src]="this.thumbnailUrl"
-                   accept="image/*" alt="drag and drop here"
-                   appDragAndDrop class="img-fluid h-100 w-100">
+                   accept="image/*" alt="Drag and drop here"
+                   appDragAndDrop class="img-fluid h-100 w-100 text-muted fw-bold p-2">
             </div>
             <div class="col d-flex justify-content-start  align-items-baseline flex-column">
               <input class="form-control py-2 ms-1 fw-bold" formControlName="title" id="title"
@@ -33,10 +33,10 @@
                   <img [src]="this.contentUrl" alt="" class="img-fluid w-100 border-0 rounded">
                 </div>
                 <div *ngSwitchCase="'video'">
-                  <video [src]="this.contentUrl" autoplay class="img-fluid w-100 border-0 rounded" controls></video>
+                  <video [src]="this.contentUrl" class="img-fluid w-100 border-0 rounded" controls></video>
                 </div>
                 <div *ngSwitchCase="'audio'">
-                  <audio [src]="this.contentUrl" autoplay class="w-100 border-0 rounded-start" controls></audio>
+                  <audio [src]="this.contentUrl" class="w-100 border-0 rounded-start" controls></audio>
                 </div>
                 <div *ngSwitchDefault>
                   <div class="d-flex justify-content-center align-items-center">

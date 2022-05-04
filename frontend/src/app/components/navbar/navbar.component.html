@@ -11,32 +11,29 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="nav">
       <ul *ngIf="!!username" class="navbar-nav ml-auto text-capitalize">
-        <li class="nav-item dropdown">
-          <a aria-expanded="false" class="nav-link dropdown-toggle text-white fw-bold" data-bs-toggle="dropdown"
-             href="#"
-             id="navbarDarkDropdownMenuLink" role="button">
-            <i *ngIf="role == 'ROlE_MODERATOR'; else blogger" class="fa fa-user-shield"></i>
+        <li class="nav-item me-1">
+          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded-end px-3"
+             [routerLink]="['/profile', username]"><i *ngIf="role == 'ROlE_MODERATOR'; else blogger"
+                                                      class="fa fa-user-shield"></i>
             <ng-template #blogger>
               <i class="fa fa-user"></i>
             </ng-template>
-            {{username}}
-          </a>
-          <ul aria-labelledby="navbarDarkDropdownMenuLink" class="dropdown-menu">
-            <li>
-              <a [routerLink]="['/profile', username]" class="dropdown-item"><i class="fa fa-user-circle me-2"></i>My
-                Profile</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/upload"><i class="fa fa-image me-2"></i>Create post</a>
-            </li>
-            <li *ngIf="role == 'ROLE_MODERATOR'">
-              <a class="dropdown-item" routerLink="/my-moderations"><i class="fa fa-balance-scale me-2"></i>My moderated
-                posts</a>
-            </li>
-          </ul>
+            {{username}}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light fw-bold" routerLink="/explore"><i class="fa fa-binoculars"></i> explore</a>
+        <!--
+          TODO: place the moderations in profile page...
+
+          <li class="nav-item ms-2" *ngIf="role == 'ROLE_MODERATOR'">
+            <a class="nav-link" routerLink="/my-moderations"><i class="fa fa-balance-scale me-2"></i>My moderated  posts</a>
+          </li>
+        -->
+        <li class="nav-item me-1">
+          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded px-3" routerLink="/explore"><i
+            class="fa fa-binoculars"></i> explore</a>
+        </li>
+        <li  class="nav-item">
+          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark px-3" routerLink="/create-post"><i
+            class="fa fa-video"></i> Create</a>
         </li>
       </ul>
       <form (ngSubmit)="search()" [formGroup]="this.searchForm" class="form-inline d-inline-block w-50 ms-auto">

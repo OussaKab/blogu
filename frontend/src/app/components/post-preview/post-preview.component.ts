@@ -11,6 +11,7 @@ export class PostPreviewComponent implements OnInit {
 
   @Input() posts: PreviewPost[] = [];
   @Input() hideUsername = false;
+  url= '';
 
   constructor(private domSanitizer: DomSanitizer) {
   }
@@ -18,11 +19,8 @@ export class PostPreviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toSrc(thumbnail: number[], mime: string) {
-    // @ts-ignore
-    let blob = new Blob(new Uint8Array(thumbnail), {type: mime});
-    let url = URL.createObjectURL(blob);
-    return this.domSanitizer.bypassSecurityTrustUrl(url);
+  toSrc(thumbnail: string, mime: string) {
+    return this.domSanitizer.bypassSecurityTrustUrl(`data:${mime};base64,${thumbnail}`);
   }
 
 }

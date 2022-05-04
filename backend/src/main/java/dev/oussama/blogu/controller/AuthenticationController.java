@@ -10,9 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 @RestController
 @RequestMapping("/auth")
 @Slf4j(topic = "AuthenticationController")

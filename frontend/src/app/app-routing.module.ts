@@ -31,7 +31,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'upload',
+    path: 'create-post',
     component: UploadComponent,
     canActivate: [AuthGuard]
   },

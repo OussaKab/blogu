@@ -1,3 +1,5 @@
+import {Role} from "./role";
+
 export class User {
   _id: number | undefined;
   username: string | undefined;

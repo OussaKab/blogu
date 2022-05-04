@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SignupComponent} from './components/signup/signup.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
-import {HomeComponent} from './components/home/home.component';
 import {ErrorComponent} from './components/error/error.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -24,7 +23,6 @@ import {DragAndDropDirective} from './directives/drag-and-drop.directive';
     AppComponent,
     SignupComponent,
     NavbarComponent,
-    HomeComponent,
     ErrorComponent,
     ExploreComponent,
     SearchComponent,

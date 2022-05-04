@@ -1,1 +1,11 @@
-<p>error works!</p>
+<div class="container-fluid mt-5 pt-5">
+  <div class="d-flex text-wrap justify-content-center align-items-center flex-column">
+    <div class="font-monospace lead">
+      <h3>
+        Apologies, <span class="text-">"{{url}}"</span> could not be found...
+      </h3>
+    </div>
+    <a class="btn btn-primary btn-lg text-capitalize fw-bold mt-3" [routerLink]="takeawayUrl"><i
+      class="fa fa-arrow-left"></i> {{takeawayText}} </a>
+  </div>
+</div>
