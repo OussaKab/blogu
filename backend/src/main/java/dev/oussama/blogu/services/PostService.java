@@ -41,6 +41,7 @@ public class PostService {
         post.setContentType(ContentType.valueOf(contentType.toUpperCase()));
         String filename = thumbnail.getOriginalFilename();
 
+        assert filename != null;
         post.setThumbnailMimeType("image/"+ filename.substring(filename.lastIndexOf(".") + 1));
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -64,15 +65,6 @@ public class PostService {
                 .stream()
                 .map(ArtSoukUtils::toPreviewPost)
                 .collect(Collectors.toList());
-    }
-
-    public Post editPost(PostView postView) throws PostNotFoundException {
-        Post post = postRepository.findById(postView.getId())
-                .orElseThrow(() -> new PostNotFoundException(postView.getId()));
-        post.setTitle(postView.getTitle());
-        post.setDescription(postView.getDescription());
-        post.setLastModifiedBy(postView.getUsername());
-        return postRepository.save(post);
     }
 
     public List<PreviewPost> searchForPosts(String search) {

@@ -27,7 +27,6 @@ public class SecurityConfigProd extends WebSecurityConfigurerAdapter {
             "/auth/login",
             "/auth/existsBy**",
             "/auth/register",
-            "/auth/change-username"
     };
     private final JwtUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
@@ -48,7 +47,6 @@ public class SecurityConfigProd extends WebSecurityConfigurerAdapter {
     //@formatter:off
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        log.info("SecurityConfigProd");
         http
             .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

@@ -82,9 +82,11 @@ public class AuthService {
     }
 
     public JwtToken login(Credentials credentials) {
-        log.info("Logging in {}", credentials.getUsername());
+        String username = credentials.getUsername();
+        String password = credentials.getPassword();
+        log.info("Logging in {}", username);
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword()));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 

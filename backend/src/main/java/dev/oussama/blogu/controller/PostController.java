@@ -2,7 +2,6 @@ package dev.oussama.blogu.controller;
 
 import dev.oussama.blogu.model.ModerationDTO;
 import dev.oussama.blogu.model.Post;
-import dev.oussama.blogu.model.PostView;
 import dev.oussama.blogu.model.PreviewPost;
 import dev.oussama.blogu.services.PostService;
 import dev.oussama.blogu.web.exceptions.PostNotFoundException;
@@ -44,12 +43,6 @@ public class PostController {
                            @RequestParam("content") MultipartFile content,
                            @RequestParam("thumbnail") MultipartFile thumbnail) {
         return postService.uploadPost(title, description, contentType, content, thumbnail);
-    }
-
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping("/edit")
-    public Post editPost(@RequestBody PostView postView) throws PostNotFoundException {
-        return this.postService.editPost(postView);
     }
 
     @ResponseStatus(HttpStatus.OK)

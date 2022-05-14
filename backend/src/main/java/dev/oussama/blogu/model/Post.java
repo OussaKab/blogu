@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Post extends Publication {
+public class Post extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
