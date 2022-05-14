@@ -1,7 +1,14 @@
 <div>
   <div class="row">
     <div class="col">
-      <app-post-preview [posts]="moderations"></app-post-preview>
+      <div *ngIf="moderations.length > 0;else noBail">
+        <app-post-preview [posts]="moderations" [role]="role"></app-post-preview>
+      </div>
+      <ng-template #noBail>
+        <div class="alert alert-info">
+          <h3 class="fw-bold"><i class="fa fa-info-circle"></i> No moderated posts to display...</h3>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

@@ -1,6 +1,9 @@
 package dev.oussama.blogu.controller;
 
-import dev.oussama.blogu.model.*;
+import dev.oussama.blogu.model.ModerationDTO;
+import dev.oussama.blogu.model.Post;
+import dev.oussama.blogu.model.PostView;
+import dev.oussama.blogu.model.PreviewPost;
 import dev.oussama.blogu.services.PostService;
 import dev.oussama.blogu.web.exceptions.PostNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -8,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -32,7 +36,6 @@ public class PostController {
         return postService.getPost(id);
     }
 
-
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping
     public Long uploadPost(@RequestParam("title") String title,
@@ -51,22 +54,28 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/search/{search}")
-    public List<Post> searchForPosts(@PathVariable String search){
+    public List<PreviewPost> searchForPosts(@PathVariable String search) {
         return postService.searchForPosts(search);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasRole('MODERATOR')")
-    @PostMapping("/moderate/{postId}")
+    @PostMapping("/moderate")
+    public boolean moderatePost(@NotNull @RequestBody ModerationDTO moderation) throws PostNotFoundException {
+        return postService.moderatePost(moderation);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/unmoderate/{postId}")
     public boolean moderatePost(@PathVariable Long postId) throws PostNotFoundException {
-    	return postService.moderatePost(postId);
+        return postService.unmoderatePost(postId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('MODERATOR')")
-    @GetMapping("/moderated")
-    public List<PreviewPost> moderatedContent() {
-        return postService.allBlocked();
+    @PostMapping("/moderations-for-user/{username}")
+    public List<PreviewPost> moderationsOfUser(@PathVariable String username) {
+        return postService.allBlockedForModerator(username);
     }
-
 }

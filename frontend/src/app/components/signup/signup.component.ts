@@ -88,7 +88,7 @@ export class SignupComponent implements OnInit {
           },
           complete: () => {
             location.reload();
-            this.router.navigateByUrl(HttpUtilities.REDIRECT_CREDENTIALS);
+            this.router.navigateByUrl('/explore');
           }
         }
       ));
@@ -120,7 +120,7 @@ export class SignupComponent implements OnInit {
         },
         complete: () => {
           location.reload();
-          this.router.navigateByUrl(HttpUtilities.REDIRECT_CREDENTIALS)
+          this.router.navigateByUrl('/explore')
         }
       }));
     }

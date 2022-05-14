@@ -4,5 +4,7 @@ export interface PreviewPost {
   mimeType: string;
   thumbnail: string;
   createdAt: Date;
+  views: number;
   createdBy: string;
+  moderationReason: string;
 }

@@ -38,5 +38,6 @@ public class Post extends Publication {
     @NotNull
     private ContentType contentType;
 
-    private boolean blocked;
+    @Embedded
+    private Moderation moderation = new Moderation(null, null, false);
 }

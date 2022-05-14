@@ -26,7 +26,8 @@ public class SecurityConfigProd extends WebSecurityConfigurerAdapter {
             "/h2-console/**",
             "/auth/login",
             "/auth/existsBy**",
-            "/auth/register"
+            "/auth/register",
+            "/auth/change-username"
     };
     private final JwtUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;

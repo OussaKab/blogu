@@ -16,7 +16,9 @@ import {ViewPostComponent} from './components/view-post/view-post.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {PostPreviewComponent} from './components/post-preview/post-preview.component';
 import {ModerationsComponent} from './components/moderations/moderations.component';
-import {DragAndDropDirective} from './directives/drag-and-drop.directive';
+import {DragAndDropDirectiveThumbnail} from './directives/drag-and-drop-directive-thumbnail.directive';
+import {ViewContentComponent} from './components/view-content/view-content.component';
+import {DragAndDropDirectiveContent} from "./directives/drag-and-drop-directive-content.directive";
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {DragAndDropDirective} from './directives/drag-and-drop.directive';
     ProfileComponent,
     PostPreviewComponent,
     ModerationsComponent,
-    DragAndDropDirective
+    DragAndDropDirectiveThumbnail,
+    DragAndDropDirectiveContent,
+    ViewContentComponent
   ],
   imports: [
     BrowserModule,

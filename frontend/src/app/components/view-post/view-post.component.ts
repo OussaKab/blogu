@@ -18,9 +18,11 @@ export class ViewPostComponent implements OnInit, OnDestroy {
   id: number | undefined;
   role: string = '';
   editForm: FormGroup;
-  sub: Subscription | undefined;
+  subs: Subscription[] = [];
   commentForm: FormGroup;
   comments: Comment[] = [];
+  moderationForm: FormGroup;
+  blocked: boolean = true;
 
   constructor(
     private fileService: FileService,
@@ -29,6 +31,9 @@ export class ViewPostComponent implements OnInit, OnDestroy {
     route: ActivatedRoute,
     private router: Router
   ) {
+    this.moderationForm = new FormGroup({
+      reason: new FormControl('', [Validators.required])
+    });
     const num = route.snapshot.params['id'];
     if (!isNaN(num) && Number.isInteger(Number(num)))
       this.id = +num;
@@ -49,9 +54,10 @@ export class ViewPostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.blocked = this.post?.moderation?.blocked;
     this.role = this.authService.getRole() || '';
     if (this.id) {
-      this.fileService.getOne(this.id).subscribe({
+      this.subs.push(this.fileService.getOne(this.id).subscribe({
         next: data => this.post = data,
         error: err =>
           Swal.fire({
@@ -59,8 +65,8 @@ export class ViewPostComponent implements OnInit, OnDestroy {
             text: err.error.message,
             icon: 'error'
           }).finally(() => this.router.navigateByUrl('/explore'))
-      });
-      this.commentService.getComments(this.id).subscribe({
+      }));
+      this.subs.push(this.commentService.getComments(this.id).subscribe({
         next: data => this.comments = data,
         error: err =>
           Swal.fire({
@@ -68,39 +74,40 @@ export class ViewPostComponent implements OnInit, OnDestroy {
             text: err.error.message,
             icon: 'error'
           })
-      });
+      }));
     }
   }
 
   edit() {
-    const title = this.editForm.get('title')?.value as string;
-    const description = this.editForm.get('description')?.value as string;
+    if (this.editForm.valid) {
+      const title = this.editForm.get('title')?.value as string;
+      const description = this.editForm.get('description')?.value as string;
 
-    this.post.title = title;
-    this.post.description = description;
+      this.post.title = title;
+      this.post.description = description;
 
-    this.sub = this.fileService.edit(this.post).subscribe({
-      next: data => {
-        Swal.fire({
-          title: 'Success',
-          text: 'Post edited successfully',
-          icon: 'success',
+      this.subs.push(this.fileService.edit(this.post).subscribe({
+        next: data => {
+          Swal.fire({
+            title: 'Success',
+            text: 'Post edited successfully',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          }).finally(() => this.post = data);
+        },
+        error: err => Swal.fire({
+          title: 'Error',
+          text: 'Error editing post',
+          icon: 'error',
           confirmButtonText: 'Ok'
-        }).finally(() => this.post = data);
-      },
-      error: err => Swal.fire({
-        title: 'Error',
-        text: 'Error editing post',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      }).finally(() => console.log(err)),
-      complete: () => console.log('edit complete')
-    });
+        }).finally(() => console.log(err)),
+        complete: () => console.log('edit complete')
+      }));
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.sub)
-      this.sub.unsubscribe();
+    this.subs.forEach(s => s.unsubscribe());
   }
 
   createComment(): void {
@@ -129,7 +136,7 @@ export class ViewPostComponent implements OnInit, OnDestroy {
         username
       };
 
-      this.sub = this.commentService.createComment(commentObj).subscribe({
+      this.subs.push(this.commentService.createComment(commentObj).subscribe({
         next: data => {
           this.comments.push(data);
           this.commentForm.reset();
@@ -141,27 +148,36 @@ export class ViewPostComponent implements OnInit, OnDestroy {
           confirmButtonText: 'Ok'
         }).finally(() => console.log(err)),
         complete: () => console.log('create complete')
-      });
+      }));
     }
   }
 
   moderate() {
-    this.fileService.moderate(this.post.id).subscribe({
-      next: () => {
-        Swal.fire({
-          title: 'Success',
-          text: 'Post moderated successfully',
-          icon: 'success',
+    if (this.moderationForm.valid) {
+      const reason = this.moderationForm.get('reason')?.value as string;
+      const username = this.authService.getUsername() || '';
+      const postId = this.post.id;
+      const moderationDTO = {reason, username, postId};
+      this.subs.push(this.fileService.moderate(moderationDTO).subscribe({
+        next: () => {
+          Swal.fire({
+            title: 'Success',
+            text: 'Post moderated successfully',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          }).finally(
+            () => this.router.navigateByUrl('/explore')
+              .finally(() => location.reload())
+          );
+        },
+        error: err => Swal.fire({
+          title: 'Error',
+          text: 'Error moderating post',
+          icon: 'error',
           confirmButtonText: 'Ok'
-        }).finally(() => this.router.navigateByUrl('/explore'));
-      },
-      error: err => Swal.fire({
-        title: 'Error',
-        text: 'Error moderating post',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      }).finally(() => console.log(err)),
-      complete: () => console.log('moderate complete')
-    });
+        }).finally(() => console.log(err)),
+        complete: () => console.log('moderate complete')
+      }));
+    }
   }
 }

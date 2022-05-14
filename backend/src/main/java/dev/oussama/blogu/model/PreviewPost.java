@@ -9,8 +9,10 @@ import java.util.Date;
 public class PreviewPost implements Serializable {
     private Long id;
     private String title;
+    private String createdBy;
+    private String mimeType;
     private Date createdAt;
     private byte[] thumbnail;
-    private String mimeType;
-    private String createdBy;
+    private long views;
+    private String moderationReason;
 }

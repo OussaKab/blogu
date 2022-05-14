@@ -1,0 +1,19 @@
+<div [ngSwitch]="this.type">
+  <div *ngSwitchCase="'IMAGE'">
+    <img [attr.autoplay]="this.autoplay" [src]="this.formattedSrc" alt="" class="img-fluid border-0 rounded">
+  </div>
+  <div *ngSwitchCase="'VIDEO'">
+    <video [attr.autoplay]="this.autoplay" [src]="this.formattedSrc" class="img-fluid border-0 rounded" controls
+           loop></video>
+  </div>
+  <div *ngSwitchCase="'AUDIO'">
+    <audio [attr.autoplay]="this.autoplay" [src]="this.formattedSrc" class=" border-0 rounded-start" controls
+           loop></audio>
+  </div>
+  <div *ngSwitchDefault>
+    <div class="d-flex justify-content-center align-items-center">
+      <p class="text-center text-muted fw-bolder h5 mt-5">Drag and drop here <i
+        class="fa fa-paperclip"></i></p>
+    </div>
+  </div>
+</div>

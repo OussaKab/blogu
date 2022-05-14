@@ -1,4 +1,3 @@
-// tslint:disable-next-line:no-namespace
 import {HttpHeaders} from "@angular/common/http";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {Validators} from "@angular/forms";

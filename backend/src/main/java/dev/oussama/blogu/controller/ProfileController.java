@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/profiles")
 public class ProfileController {
 
-
     private final ProfileService profileService;
 
     public ProfileController(ProfileService profileService) {

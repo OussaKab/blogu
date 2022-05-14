@@ -1,11 +1,11 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
+    <div class="col d-flex flex-wrap">
       <div *ngIf="files.length > 0; else noFiles">
         <app-post-preview [posts]="files"></app-post-preview>
       </div>
       <ng-template #noFiles class="text-center">
-        <div class="d-flex align-items-center justify-content-center flex-column alert alert-info mx-auto shadow"
+        <div class="d-flex align-items-center justify-content-center flex-column alert alert-info mx-auto shadow w-100"
              role="alert">
           <h3><strong>No posts available yet!</strong></h3>
           <a class="text-decoration-none btn btn-primary fw-bold" routerLink="/create-post"><i class="fa fa-video"></i>

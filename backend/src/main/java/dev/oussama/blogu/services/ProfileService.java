@@ -1,5 +1,7 @@
 package dev.oussama.blogu.services;
 
+import dev.oussama.blogu.config.ArtSoukUtils;
+import dev.oussama.blogu.model.Moderation;
 import dev.oussama.blogu.model.Post;
 import dev.oussama.blogu.model.PreviewPost;
 import dev.oussama.blogu.model.Profile;
@@ -35,16 +37,11 @@ public class ProfileService {
         profile.setTotalViews(posts.parallelStream().mapToLong(Post::getViews).sum());
 
         List<PreviewPost> previewPosts = posts.stream()
-                .filter(p -> !p.isBlocked())
-                .map(p -> {
-                    PreviewPost previewPost = new PreviewPost();
-                    previewPost.setId(p.getId());
-                    previewPost.setTitle(p.getTitle());
-                    previewPost.setCreatedBy(username);
-                    previewPost.setCreatedAt(p.getCreatedDate());
-                    return previewPost;
-                }).collect(Collectors.toList());
-
+                .filter(p -> {
+                    Moderation m = p.getModeration();
+                    return !m.isBlocked();
+                }).map(ArtSoukUtils::toPreviewPost)
+                .collect(Collectors.toList());
         profile.setPosts(previewPosts);
 
         return profile;

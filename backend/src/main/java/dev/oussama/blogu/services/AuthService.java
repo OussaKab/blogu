@@ -44,7 +44,7 @@ public class AuthService {
     }
     //@formatter:on
 
-    public JwtToken signup(SignupRequest signupRequest) throws Exception {
+    public JwtToken signup(SignupRequest signupRequest) {
         final String login = signupRequest.getLogin();
         final String email = signupRequest.getEmail();
         final String password = signupRequest.getSecret();
@@ -81,7 +81,7 @@ public class AuthService {
         return userRepository.existsByCredentials_Username(username);
     }
 
-    public JwtToken login(Credentials credentials) throws Exception {
+    public JwtToken login(Credentials credentials) {
         log.info("Logging in {}", credentials.getUsername());
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword()));

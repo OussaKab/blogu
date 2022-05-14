@@ -21,8 +21,8 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping("/{path:.+}")
-    public ResponseEntity<Resource> getRessource(@PathVariable String path) throws IOException {
+    @PostMapping("/single")
+    public ResponseEntity<Resource> getRessource(@RequestParam("path") String path) throws IOException {
         Resource file = fileService.load(path);
 
         return ResponseEntity.ok()

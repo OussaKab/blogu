@@ -3,14 +3,37 @@
     <div class="d-flex justify-content-start align-items-center mb-2">
       <a class="text-capitalize btn btn-primary fw-bold me-3 shadow-sm" routerLink="/explore"><i
         class="fa fa-arrow-left me-2"></i>go
-        back</a>
-      <button (click)="moderate()" *ngIf="role == 'ROLE_MODERATOR'" class="btn btn-danger fw-bold text-capitalize"
-              type="button"><i
-        class="fa fa-gavel me-2"></i> moderate
-      </button>
+        to explore</a>
+      <div *ngIf="!blocked">
+        <button *ngIf="role == 'ROLE_MODERATOR'" class="btn btn-danger fw-bold text-capitalize"
+                data-bs-target="#exampleModal"
+                data-bs-toggle="modal" type="button"><i class="fa fa-gavel fa-flip-horizontal"></i>
+          moderate
+        </button>
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade text-black" id="exampleModal"
+             tabindex="-1">
+          <div class="modal-dialog">
+            <form (ngSubmit)="moderate()" [formGroup]="moderationForm" class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Moderation of "{{post.title}}"</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+              </div>
+              <div class="modal-body">
+                <label class="col-form-label" for="message-text">Reason:</label>
+                <textarea class="form-control" formControlName="reason" id="message-text"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary w-100" data-bs-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary w-100" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
     <hr>
     <h3 class="fw-bold">{{post.title}}</h3>
+    <app-view-content [autoplay]="true" [src]="post.contentPath" [type]="post.contentType"></app-view-content>
     <p>{{post.description}}</p>
     <div class="d-flex justify-content-between mt-2">
       <h5><a [routerLink]="['/profile', post.createdBy]"

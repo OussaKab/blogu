@@ -10,33 +10,29 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="nav">
-      <ul *ngIf="!!username" class="navbar-nav ml-auto text-capitalize">
+      <ul *ngIf="!!username" class="navbar-nav ml-auto">
         <li class="nav-item me-1">
-          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded-end px-3"
-             [routerLink]="['/profile', username]"><i *ngIf="role == 'ROlE_MODERATOR'; else blogger"
-                                                      class="fa fa-user-shield"></i>
-            <ng-template #blogger>
-              <i class="fa fa-user"></i>
-            </ng-template>
-            {{username}}</a>
+          <a [routerLink]="['/profile', username]"
+             class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded-end px-3"
+             routerLinkActive="bg-dark">
+            <i [ngClass]="{'fa-user-shield':this.role === 'ROLE_MODERATOR', 'fa-user': 'ROLE_BLOGGER'}" class="fa"></i>
+            {{username}}
+          </a>
         </li>
-        <!--
-          TODO: place the moderations in profile page...
 
-          <li class="nav-item ms-2" *ngIf="role == 'ROLE_MODERATOR'">
-            <a class="nav-link" routerLink="/my-moderations"><i class="fa fa-balance-scale me-2"></i>My moderated  posts</a>
-          </li>
-        -->
-        <li class="nav-item me-1">
-          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded px-3" routerLink="/explore"><i
+        <li class="nav-item me-1 text-capitalize">
+          <a class="nav-link text-light fw-bold border-0 btn btn-outline-dark rounded px-3" routerLink="/explore"
+             routerLinkActive="bg-dark"><i
             class="fa fa-binoculars"></i> explore</a>
         </li>
-        <li  class="nav-item">
-          <a routerLinkActive="bg-dark" class="nav-link text-light fw-bold border-0 btn btn-outline-dark px-3" routerLink="/create-post"><i
-            class="fa fa-video"></i> Create</a>
+        <li class="nav-item text-capitalize">
+          <a class="nav-link text-light fw-bold border-0 btn btn-outline-dark px-3" routerLink="/create-post"
+             routerLinkActive="bg-dark"><i
+            class="fa fa-video"></i> create</a>
         </li>
       </ul>
-      <form (ngSubmit)="search()" [formGroup]="this.searchForm" class="form-inline d-inline-block w-50 ms-auto">
+      <form (ngSubmit)="search()" *ngIf="username" [formGroup]="this.searchForm"
+            class="form-inline d-inline-block w-50 ms-auto">
         <div class="input-group">
           <input aria-label="Search" class="form-control rounded-start shadow border-0 px-3 py-2 fw-bolder"
                  formControlName="search" placeholder="Search for content..." type="search">

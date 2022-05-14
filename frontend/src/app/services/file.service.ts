@@ -5,6 +5,7 @@ import {HttpUtilities} from "../models/HttpUtilities";
 import {HttpClient} from "@angular/common/http";
 import {Post} from "../models/post";
 import {PreviewPost} from "../models/preview-post";
+import {ModerationDTO} from "../models/moderation-d-t-o";
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +32,8 @@ export class FileService {
     );
   }
 
-  getFile(path: string): Observable<Blob> {
-    return this.http.get(`${environment.serverUrl}/files/${path}`, {responseType: 'blob'}).pipe(
+  getFile(data: any): Observable<Blob> {
+    return this.http.post(`${environment.serverUrl}/files/single?`, data, {responseType: 'blob'}).pipe(
       retry(2),
       shareReplay(1)
     );
@@ -59,15 +60,22 @@ export class FileService {
     );
   }
 
-  moderate(id: number) {
-    return this.http.post<boolean>(`${environment.serverUrl}/posts/moderate/${id}`, HttpUtilities.JSON_HTTP_OPTIONS).pipe(
+  moderate(moderationDTO: ModerationDTO) {
+    return this.http.post<boolean>(`${environment.serverUrl}/posts/moderate`, JSON.stringify(moderationDTO), HttpUtilities.JSON_HTTP_OPTIONS).pipe(
       retry(2),
       shareReplay(1)
     );
   }
 
-  getAllModerateForUser() {
-    return this.http.get<PreviewPost[]>(`${environment.serverUrl}/posts/moderated`, HttpUtilities.JSON_HTTP_OPTIONS).pipe(
+  unmoderate(postId: number) {
+    return this.http.post<boolean>(`${environment.serverUrl}/posts/unmoderate/${postId}`, HttpUtilities.JSON_HTTP_OPTIONS).pipe(
+      retry(2),
+      shareReplay(1)
+    );
+  }
+
+  getAllModerateForUser(username: string) {
+    return this.http.post<PreviewPost[]>(`${environment.serverUrl}/posts/moderations-for-user/${username}`, HttpUtilities.JSON_HTTP_OPTIONS).pipe(
       retry(2),
       shareReplay(1)
     );

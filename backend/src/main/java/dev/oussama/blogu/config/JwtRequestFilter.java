@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -30,7 +29,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
-        if (Stream.of(SecurityConfigProd.AUTH_WHITELIST).noneMatch(req.getRequestURI()::contains)) {
+        if (isRouteRestricted(req.getRequestURI())) {
             final String requestTokenHeader = req.getHeader(ArtSoukUtils.JwtConstants.REQ_HEADER);
             String jwtToken = null;
             UserDetails user = null;
@@ -62,5 +61,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         chain.doFilter(req, res);
+    }
+
+    private boolean isRouteRestricted(String route) {
+        String[] parts = route.split("/");
+        route = String.format("/%s/%s", parts[parts.length - 2], parts[parts.length - 1]);
+        log.info(route);
+        for (String r : SecurityConfigProd.AUTH_WHITELIST)
+            if (route.contains(r))
+                return false;
+        return true;
     }
 }

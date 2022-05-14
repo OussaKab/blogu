@@ -1,18 +1,16 @@
 import {Directive, EventEmitter, HostBinding, HostListener, Output} from '@angular/core';
 
 @Directive({
-  selector: '[appDragAndDrop]'
+  selector: '[appDragAndDropContent]'
 })
-export class DragAndDropDirective {
+export class DragAndDropDirectiveContent {
 
   @HostBinding('class.fileover') fileOver: boolean = false;
 
   @Output() filesDropped = new EventEmitter<File>();
 
-
   constructor() {
   }
-
 
   @HostListener('dragstart', ['$event'])
   onDragStart(e: any) {

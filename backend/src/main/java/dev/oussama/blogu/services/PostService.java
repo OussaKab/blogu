@@ -1,19 +1,16 @@
 package dev.oussama.blogu.services;
 
+import dev.oussama.blogu.config.ArtSoukUtils;
 import dev.oussama.blogu.model.*;
 import dev.oussama.blogu.repository.PostRepository;
 import dev.oussama.blogu.repository.UserRepository;
 import dev.oussama.blogu.web.exceptions.PostNotFoundException;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,23 +60,10 @@ public class PostService {
     }
 
     public List<PreviewPost> getAllPosts() {
-        return postRepository.findAll()
-            .stream()
-            .filter(p -> !p.isBlocked())
-            .map(p -> {
-                PreviewPost previewPost = new PreviewPost();
-                previewPost.setId(p.getId());
-                previewPost.setTitle(p.getTitle());
-                previewPost.setCreatedBy(p.getUser().getUsername());
-                previewPost.setCreatedAt(p.getCreatedDate());
-                previewPost.setMimeType(p.getThumbnailMimeType());
-                try {
-                    previewPost.setThumbnail(Files.readAllBytes(Paths.get(p.getThumbnailPath())));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return previewPost;
-            }).collect(Collectors.toList());
+        return postRepository.findAllByModeration_BlockedFalse()
+                .stream()
+                .map(ArtSoukUtils::toPreviewPost)
+                .collect(Collectors.toList());
     }
 
     public Post editPost(PostView postView) throws PostNotFoundException {
@@ -91,24 +75,45 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public List<Post> searchForPosts(String search) {
-        return postRepository.findAllByTitleOrDescriptionContaining(search, search);
+    public List<PreviewPost> searchForPosts(String search) {
+        return postRepository
+                .findAllByTitleOrDescriptionContaining(search, search)
+                .stream()
+                .map(ArtSoukUtils::toPreviewPost)
+                .collect(Collectors.toList());
     }
 
-    public boolean moderatePost(Long postId) throws PostNotFoundException {
+    public boolean moderatePost(ModerationDTO moderationDTO) throws PostNotFoundException {
+        Long postId = moderationDTO.getPostId();
+        final String username = moderationDTO.getUsername();
+        final String reason = moderationDTO.getReason();
+
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
-        post.setBlocked(!post.isBlocked());
-        return postRepository.save(post).isBlocked();
+
+        Moderation moderation = new Moderation();
+        moderation.setModerator(userRepository.findByCredentials_Username(username).orElseThrow());
+        moderation.setBlocked(true);
+        moderation.setReason(reason);
+
+        post.setModeration(moderation);
+
+        postRepository.save(post);
+        return moderation.isBlocked();
     }
 
-    public List<PreviewPost> allBlocked() {
-        return postRepository.findAll().stream().filter(Post::isBlocked).map(p -> {
-            PreviewPost previewPost = new PreviewPost();
-            previewPost.setId(p.getId());
-            previewPost.setTitle(p.getTitle());
-            previewPost.setCreatedBy(p.getUser().getUsername());
-            previewPost.setCreatedAt(p.getCreatedDate());
-            return previewPost;
-        }).collect(Collectors.toList());
+    public boolean unmoderatePost(Long postId) throws PostNotFoundException {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+
+        post.setModeration(new Moderation(null, null, false));
+
+        postRepository.save(post);
+        return post.getModeration().isBlocked();
+    }
+
+    public List<PreviewPost> allBlockedForModerator(String username) {
+        return postRepository.findAllByModeration_Moderator_Credentials_UsernameAndModeration_BlockedTrue(username)
+                .stream()
+                .map(ArtSoukUtils::toPreviewPost)
+                .collect(Collectors.toList());
     }
 }
